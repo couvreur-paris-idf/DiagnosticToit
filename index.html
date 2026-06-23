@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnostic-Toit | AD CHANTIERS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #1A2F45;
+    --navy-light: #243B55;
+    --gold: #D4A017;
+    --gold-light: #F0C040;
+    --white: #FFFFFF;
+    --off-white: #F0EDE8;
+    --muted: #8B9EB0;
+    --danger: #C0392B;
+    --success: #27AE60;
+    --border: rgba(212,160,23,0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--navy);
+    border-bottom: 2px solid var(--gold);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo-block { display: flex; align-items: center; gap: 12px; }
+  .logo-circle {
+    width: 44px; height: 44px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+  .logo-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; }
+  .logo-text span { color: var(--gold); }
+  .logo-sub { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .header-badge {
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 20px 28px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(28px, 7vw, 48px);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero-desc {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 480px;
+    margin: 0 auto 20px;
+  }
+  .hero-steps {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .step-pill {
+    background: rgba(212,160,23,0.12);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: var(--gold-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .step-pill .num {
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 50%;
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 10px;
+  }
+
+  /* MAIN CONTAINER */
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: var(--navy-mid);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .progress-label strong { color: var(--gold); }
+  .progress-track {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  /* SECTION CARD */
+  .section-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    display: none;
+    animation: fadeUp 0.3s ease;
+  }
+  .section-card.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  /* FIELD */
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 7px;
+    color: var(--off-white);
+  }
+  .field label .req {
+    color: var(--gold);
+    margin-left: 3px;
+    font-size: 11px;
+  }
+  .field label .opt {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    background: rgba(212,160,23,0.06);
+  }
+  input.error, select.error, textarea.error {
+    border-color: var(--danger);
+  }
+  select option { background: var(--navy-mid); }
+  textarea { resize: vertical; min-height: 80px; }
+
+  /* RADIO / CHECKBOX CARDS */
+  .choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .choice-grid.single { grid-template-columns: 1fr; }
+
+  .choice-card {
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.10);
+    border-radius: 8px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    user-select: none;
+  }
+  .choice-card:hover {
+    border-color: var(--gold);
+    background: rgba(212,160,23,0.07);
+  }
+  .choice-card.selected {
+    border-color: var(--gold);
+    background: rgba(212,160,23,0.14);
+    color: var(--gold-light);
+  }
+  .choice-card.selected .choice-icon { color: var(--gold); }
+  .choice-icon { font-size: 20px; flex-shrink: 0; }
+  .choice-label { font-weight: 500; line-height: 1.3; }
+  .choice-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ERROR MSG */
+  .error-msg {
+    color: var(--danger);
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+
+  /* BUTTONS */
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-secondary {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* RESULT */
+  #result { display: none; }
+  .result-header {
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .result-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .result-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .result-header p { font-size: 13px; color: var(--muted); }
+
+  .summary-block {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .summary-block h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-key {
+    color: var(--muted);
+    flex: 0 0 140px;
+    font-size: 12px;
+  }
+  .summary-val { color: var(--white); font-weight: 500; }
+
+  .reco-block {
+    background: linear-gradient(135deg, rgba(212,160,23,0.12), rgba(212,160,23,0.05));
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .reco-block h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .reco-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+  }
+  .reco-bullet {
+    width: 22px; height: 22px;
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .urgency-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .urgency-urgent { background: rgba(192,57,43,0.2); color: #E74C3C; border: 1px solid #E74C3C; }
+  .urgency-normal { background: rgba(212,160,23,0.15); color: var(--gold); border: 1px solid var(--gold); }
+  .urgency-low { background: rgba(39,174,96,0.15); color: #2ECC71; border: 1px solid #2ECC71; }
+
+  /* CONTACT BUTTONS */
+  .contact-block {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .contact-block h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .contact-block p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .contact-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 16px;
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: opacity 0.2s, transform 0.1s;
+    cursor: pointer;
+    border: none;
+  }
+  .contact-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .contact-btn:active { transform: translateY(0); }
+  .btn-whatsapp { background: #25D366; color: #fff; }
+  .btn-sms { background: #4A90D9; color: #fff; }
+  .btn-mail { background: var(--gold); color: var(--navy); }
+  .btn-messenger { background: #0099FF; color: #fff; }
+  .contact-btn svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+
+  /* RESTART */
+  .restart-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 11px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .restart-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* COPY BLOCK */
+  .copy-block {
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(212,160,23,0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .copy-block h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .copy-block p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  #copy-textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--off-white);
+    font-family: 'Inter', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 12px 14px;
+    resize: vertical;
+    min-height: 200px;
+    outline: none;
+  }
+  .copy-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 11px;
+    border-radius: 8px;
+    background: rgba(212,160,23,0.15);
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: var(--gold); color: var(--navy); }
+  .copy-btn.copied { background: var(--success); border-color: var(--success); color: #fff; }
+
+  /* MODAL MENTIONS LÉGALES */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+  .modal-box {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-width: 680px;
+    width: 100%;
+    padding: 28px;
+    margin: auto;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: var(--muted);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.18); color: var(--white); }
+  .modal-box h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 20px;
+    padding-right: 40px;
+  }
+  .modal-box h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 20px 0 8px;
+  }
+  .modal-box p, .modal-box li {
+    font-size: 13px;
+    color: var(--off-white);
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+  .modal-box ul { padding-left: 18px; }
+  .modal-box a { color: var(--gold); }
+  .ml-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 14px 0;
+  }
+
+  @media (max-width: 480px) {
+    .choice-grid { grid-template-columns: 1fr; }
+    .contact-btns { grid-template-columns: 1fr; }
+    .summary-key { flex: 0 0 110px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-block">
+    <div class="logo-circle">ADCH</div>
+    <div>
+      <div class="logo-text">AD <span>CHANTIERS</span></div>
+      <div class="logo-sub">Couverture · Zinguerie · Île-de-France</div>
+    </div>
+  </div>
+  <div class="header-badge">Diagnostic-Toit</div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Outil gratuit · AD CHANTIERS</div>
+  <h1>Votre toit vous<br><em>parle — écoutez-le.</em></h1>
+  <p class="hero-desc">Répondez à quelques questions pour identifier votre problème et recevoir une recommandation personnalisée de notre équipe.</p>
+  <div class="hero-steps">
+    <div class="step-pill"><span class="num">1</span> Vos infos</div>
+    <div class="step-pill"><span class="num">2</span> Le problème</div>
+    <div class="step-pill"><span class="num">3</span> Les détails</div>
+    <div class="step-pill"><span class="num">4</span> Résumé</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap" id="progressWrap">
+    <div class="progress-label">
+      <span id="progressText">Étape 1 sur 4</span>
+      <strong id="progressPct">0 %</strong>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ====================== STEP 1 : INFOS ====================== -->
+  <div class="section-card active" id="step1">
+    <div class="section-tag">Étape 1 · Votre profil</div>
+    <div class="section-title">Qui êtes-vous ?</div>
+    <div class="section-desc">Ces informations permettront à notre équipe de vous recontacter avec votre résumé.</div>
+
+    <div class="field">
+      <label>Prénom <span class="req">*</span></label>
+      <input type="text" id="prenom" placeholder="Ex : Jean">
+      <div class="error-msg" id="err-prenom">Veuillez saisir votre prénom.</div>
+    </div>
+    <div class="field">
+      <label>Nom <span class="req">*</span></label>
+      <input type="text" id="nom" placeholder="Ex : Dupont">
+      <div class="error-msg" id="err-nom">Veuillez saisir votre nom.</div>
+    </div>
+    <div class="field">
+      <label>Ville / Code postal <span class="req">*</span></label>
+      <input type="text" id="ville" placeholder="Ex : Créteil 94000">
+      <div class="error-msg" id="err-ville">Veuillez indiquer votre ville.</div>
+    </div>
+    <div class="field">
+      <label>Téléphone <span class="req">*</span></label>
+      <input type="tel" id="tel" placeholder="Ex : 06 12 34 56 78">
+      <div class="error-msg" id="err-tel">Veuillez indiquer un numéro de téléphone.</div>
+    </div>
+    <div class="field">
+      <label>Email <span class="opt">(optionnel)</span></label>
+      <input type="email" id="email" placeholder="Ex : jean.dupont@email.com">
+    </div>
+    <div class="field">
+      <label>Vous êtes <span class="req">*</span></label>
+      <div class="choice-grid">
+        <div class="choice-card" data-group="profil" data-val="Particulier" onclick="selectChoice(this)">
+          <span class="choice-icon">🏠</span>
+          <div><div class="choice-label">Particulier</div></div>
+        </div>
+        <div class="choice-card" data-group="profil" data-val="Syndic / Gestionnaire" onclick="selectChoice(this)">
+          <span class="choice-icon">🏢</span>
+          <div><div class="choice-label">Syndic / Gestionnaire</div></div>
+        </div>
+        <div class="choice-card" data-group="profil" data-val="Architecte / Maître d'œuvre" onclick="selectChoice(this)">
+          <span class="choice-icon">📐</span>
+          <div><div class="choice-label">Architecte / MOE</div></div>
+        </div>
+        <div class="choice-card" data-group="profil" data-val="Commerce / Entreprise" onclick="selectChoice(this)">
+          <span class="choice-icon">🏪</span>
+          <div><div class="choice-label">Commerce / Entreprise</div></div>
+        </div>
+        <div class="choice-card" data-group="profil" data-val="Hôtel / Établissement" onclick="selectChoice(this)">
+          <span class="choice-icon">🏨</span>
+          <div><div class="choice-label">Hôtel / Établissement</div></div>
+        </div>
+        <div class="choice-card" data-group="profil" data-val="Autre" onclick="selectChoice(this)">
+          <span class="choice-icon">❓</span>
+          <div><div class="choice-label">Autre</div></div>
+        </div>
+      </div>
+      <div class="error-msg" id="err-profil">Veuillez sélectionner votre profil.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goStep(2)">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- ====================== STEP 2 : PROBLÈME PRINCIPAL ====================== -->
+  <div class="section-card" id="step2">
+    <div class="section-tag">Étape 2 · Identification</div>
+    <div class="section-title">Quel est votre problème principal ?</div>
+    <div class="section-desc">Choisissez la situation qui correspond le mieux à votre cas. Vous pourrez préciser ensuite.</div>
+
+    <div class="field">
+      <div class="choice-grid single">
+        <div class="choice-card" data-group="probleme" data-val="Fuite / Infiltration d'eau" onclick="selectChoice(this)">
+          <span class="choice-icon">💧</span>
+          <div><div class="choice-label">Fuite / Infiltration d'eau</div><div class="choice-sub">Traces humides, eau qui entre, taches au plafond</div></div>
+        </div>
+        <div class="choice-card" data-group="probleme" data-val="Toiture vieillissante / à rénover" onclick="selectChoice(this)">
+          <span class="choice-icon">🔨</span>
+          <div><div class="choice-label">Toiture vieillissante / à rénover</div><div class="choice-sub">Tuiles cassées, ardoises déplacées, zinc abîmé</div></div>
+        </div>
+        <div class="choice-card" data-group="probleme" data-val="Mousse / Végétation / Entretien" onclick="selectChoice(this)">
+          <span class="choice-icon">🌿</span>
+          <div><div class="choice-label">Mousse, végétation, démoussage</div><div class="choice-sub">Toiture encrassée, mousses, lichens, hydrofuge</div></div>
+        </div>
+        <div class="choice-card" data-group="probleme" data-val="Zinguerie (gouttières, chéneaux, zinc)" onclick="selectChoice(this)">
+          <span class="choice-icon">⚙️</span>
+          <div><div class="choice-label">Zinguerie — gouttières, chéneaux, zinc</div><div class="choice-sub">Fuite de gouttière, chéneau bouché, façonnage zinc</div></div>
+        </div>
+        <div class="choice-card" data-group="probleme" data-val="Isolation (thermique / acoustique)" onclick="selectChoice(this)">
+          <span class="choice-icon">🌡️</span>
+          <div><div class="choice-label">Isolation thermique / acoustique</div><div class="choice-sub">Combles mal isolés, pont thermique, déperdition</div></div>
+        </div>
+        <div class="choice-card" data-group="probleme" data-val="Velux / Fenêtre de toit" onclick="selectChoice(this)">
+          <span class="choice-icon">🪟</span>
+          <div><div class="choice-label">Velux / Fenêtre de toit</div><div class="choice-sub">Pose, remplacement, fuite autour d'un Velux</div></div>
+        </div>
+        <div class="choice-card" data-group="probleme" data-val="Urgence (tempête, bâchage)" onclick="selectChoice(this)">
+          <span class="choice-icon">⚠️</span>
+          <div><div class="choice-label">Urgence — tempête, bâchage</div><div class="choice-sub">Dégât immédiat, toiture ouverte, intervention rapide</div></div>
+        </div>
+        <div class="choice-card" data-group="probleme" data-val="Diagnostic / Devis sans problème précis" onclick="selectChoice(this)">
+          <span class="choice-icon">🔍</span>
+          <div><div class="choice-label">Diagnostic ou devis (sans problème précis)</div><div class="choice-sub">Inspection préventive, achat immobilier, projet</div></div>
+        </div>
+      </div>
+      <div class="error-msg" id="err-probleme">Veuillez sélectionner un problème.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(1)">← Retour</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- ====================== STEP 3 : DÉTAILS ====================== -->
+  <div class="section-card" id="step3">
+    <div class="section-tag">Étape 3 · Précisions</div>
+    <div class="section-title" id="step3-title">Décrivez votre situation</div>
+    <div class="section-desc" id="step3-desc">Plus vous précisez, plus notre recommandation sera adaptée.</div>
+
+    <!-- === SUB : FUITE === -->
+    <div id="sub-fuite" style="display:none">
+      <div class="field">
+        <label>Où se manifeste la fuite ? <span class="req">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="fuite-lieu" data-val="Plafond intérieur" onclick="selectChoice(this)"><span class="choice-icon">🏠</span><div class="choice-label">Plafond intérieur</div></div>
+          <div class="choice-card" data-group="fuite-lieu" data-val="Mur / Façade" onclick="selectChoice(this)"><span class="choice-icon">🧱</span><div class="choice-label">Mur / Façade</div></div>
+          <div class="choice-card" data-group="fuite-lieu" data-val="Autour d'un Velux" onclick="selectChoice(this)"><span class="choice-icon">🪟</span><div class="choice-label">Autour d'un Velux</div></div>
+          <div class="choice-card" data-group="fuite-lieu" data-val="Gouttière / Chéneau" onclick="selectChoice(this)"><span class="choice-icon">💦</span><div class="choice-label">Gouttière / Chéneau</div></div>
+          <div class="choice-card" data-group="fuite-lieu" data-val="Pas certain, partout" onclick="selectChoice(this)"><span class="choice-icon">❓</span><div class="choice-label">Pas certain, partout</div></div>
+        </div>
+        <div class="error-msg" id="err-fuite-lieu">Veuillez indiquer l'emplacement.</div>
+      </div>
+      <div class="field">
+        <label>La fuite est active en ce moment ? <span class="req">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="fuite-active" data-val="Oui, fuite active" onclick="selectChoice(this)"><span class="choice-icon">🚨</span><div class="choice-label">Oui, fuite active</div></div>
+          <div class="choice-card" data-group="fuite-active" data-val="Non, traces anciennes" onclick="selectChoice(this)"><span class="choice-icon">🕐</span><div class="choice-label">Non, traces anciennes</div></div>
+          <div class="choice-card" data-group="fuite-active" data-val="Seulement sous la pluie" onclick="selectChoice(this)"><span class="choice-icon">🌧️</span><div class="choice-label">Seulement sous la pluie</div></div>
+        </div>
+        <div class="error-msg" id="err-fuite-active">Répondez à cette question.</div>
+      </div>
+      <div class="field">
+        <label>Depuis combien de temps ? <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="fuite-duree" data-val="Moins d'1 semaine" onclick="selectChoice(this)"><div class="choice-label">Moins d'1 semaine</div></div>
+          <div class="choice-card" data-group="fuite-duree" data-val="1 à 4 semaines" onclick="selectChoice(this)"><div class="choice-label">1 à 4 semaines</div></div>
+          <div class="choice-card" data-group="fuite-duree" data-val="Plusieurs mois" onclick="selectChoice(this)"><div class="choice-label">Plusieurs mois</div></div>
+          <div class="choice-card" data-group="fuite-duree" data-val="Plus d'1 an" onclick="selectChoice(this)"><div class="choice-label">Plus d'1 an</div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Avez-vous déjà fait intervenir un couvreur ? <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="fuite-hist" data-val="Oui, sans résultat" onclick="selectChoice(this)"><div class="choice-label">Oui, sans résultat</div></div>
+          <div class="choice-card" data-group="fuite-hist" data-val="Oui, mais fuite revenue" onclick="selectChoice(this)"><div class="choice-label">Oui, fuite revenue</div></div>
+          <div class="choice-card" data-group="fuite-hist" data-val="Non, première fois" onclick="selectChoice(this)"><div class="choice-label">Non, première fois</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === SUB : RENOVATION === -->
+    <div id="sub-renovation" style="display:none">
+      <div class="field">
+        <label>Type de couverture actuelle <span class="req">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="reno-mat" data-val="Tuiles" onclick="selectChoice(this)"><span class="choice-icon">🟫</span><div class="choice-label">Tuiles</div></div>
+          <div class="choice-card" data-group="reno-mat" data-val="Ardoises" onclick="selectChoice(this)"><span class="choice-icon">⬛</span><div class="choice-label">Ardoises</div></div>
+          <div class="choice-card" data-group="reno-mat" data-val="Zinc" onclick="selectChoice(this)"><span class="choice-icon">🔩</span><div class="choice-label">Zinc</div></div>
+          <div class="choice-card" data-group="reno-mat" data-val="Plomb" onclick="selectChoice(this)"><span class="choice-icon">🪨</span><div class="choice-label">Plomb</div></div>
+          <div class="choice-card" data-group="reno-mat" data-val="Bac acier" onclick="selectChoice(this)"><span class="choice-icon">🔷</span><div class="choice-label">Bac acier</div></div>
+          <div class="choice-card" data-group="reno-mat" data-val="Je ne sais pas" onclick="selectChoice(this)"><span class="choice-icon">❓</span><div class="choice-label">Je ne sais pas</div></div>
+        </div>
+        <div class="error-msg" id="err-reno-mat">Sélectionnez le type de couverture.</div>
+      </div>
+      <div class="field">
+        <label>Âge estimé de la toiture <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="reno-age" data-val="Moins de 10 ans" onclick="selectChoice(this)"><div class="choice-label">Moins de 10 ans</div></div>
+          <div class="choice-card" data-group="reno-age" data-val="10 à 25 ans" onclick="selectChoice(this)"><div class="choice-label">10 à 25 ans</div></div>
+          <div class="choice-card" data-group="reno-age" data-val="25 à 50 ans" onclick="selectChoice(this)"><div class="choice-label">25 à 50 ans</div></div>
+          <div class="choice-card" data-group="reno-age" data-val="Plus de 50 ans" onclick="selectChoice(this)"><div class="choice-label">Plus de 50 ans</div></div>
+          <div class="choice-card" data-group="reno-age" data-val="Inconnu" onclick="selectChoice(this)"><div class="choice-label">Inconnu</div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Étendue du problème <span class="req">*</span></label>
+        <div class="choice-grid single">
+          <div class="choice-card" data-group="reno-etendue" data-val="Quelques éléments isolés à remplacer" onclick="selectChoice(this)"><span class="choice-icon">🔧</span><div><div class="choice-label">Quelques éléments isolés</div><div class="choice-sub">Tuiles cassées, ardoises à repositionner</div></div></div>
+          <div class="choice-card" data-group="reno-etendue" data-val="Réfection partielle (une partie de la toiture)" onclick="selectChoice(this)"><span class="choice-icon">🔨</span><div><div class="choice-label">Réfection partielle</div><div class="choice-sub">Une partie de la toiture à refaire</div></div></div>
+          <div class="choice-card" data-group="reno-etendue" data-val="Réfection complète (toiture entière)" onclick="selectChoice(this)"><span class="choice-icon">🏗️</span><div><div class="choice-label">Réfection complète</div><div class="choice-sub">Toiture entière à refaire</div></div></div>
+          <div class="choice-card" data-group="reno-etendue" data-val="Je ne sais pas encore" onclick="selectChoice(this)"><span class="choice-icon">❓</span><div><div class="choice-label">Je ne sais pas encore</div><div class="choice-sub">Besoin d'un diagnostic d'abord</div></div></div>
+        </div>
+        <div class="error-msg" id="err-reno-etendue">Veuillez sélectionner l'étendue des travaux.</div>
+      </div>
+      <div class="field">
+        <label>La charpente a-t-elle été inspectée ? <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="reno-charp" data-val="Oui, charpente saine" onclick="selectChoice(this)"><div class="choice-label">Oui, charpente saine</div></div>
+          <div class="choice-card" data-group="reno-charp" data-val="Oui, problème détecté" onclick="selectChoice(this)"><div class="choice-label">Oui, problème détecté</div></div>
+          <div class="choice-card" data-group="reno-charp" data-val="Non, non inspectée" onclick="selectChoice(this)"><div class="choice-label">Non, non inspectée</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === SUB : MOUSSE === -->
+    <div id="sub-mousse" style="display:none">
+      <div class="field">
+        <label>État visuel de la toiture <span class="req">*</span></label>
+        <div class="choice-grid single">
+          <div class="choice-card" data-group="mousse-etat" data-val="Mousse légère (début)" onclick="selectChoice(this)"><span class="choice-icon">🌱</span><div><div class="choice-label">Mousse légère (début)</div><div class="choice-sub">Quelques taches vertes, légères</div></div></div>
+          <div class="choice-card" data-group="mousse-etat" data-val="Mousse épaisse (avancée)" onclick="selectChoice(this)"><span class="choice-icon">🌿</span><div><div class="choice-label">Mousse épaisse (avancée)</div><div class="choice-sub">Végétation dense sur toute la surface</div></div></div>
+          <div class="choice-card" data-group="mousse-etat" data-val="Lichens / encrassement général" onclick="selectChoice(this)"><span class="choice-icon">🪨</span><div><div class="choice-label">Lichens / encrassement général</div><div class="choice-sub">Croûtes grises ou noires difficiles à enlever</div></div></div>
+        </div>
+        <div class="error-msg" id="err-mousse-etat">Veuillez sélectionner l'état de la toiture.</div>
+      </div>
+      <div class="field">
+        <label>Traitement souhaité <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid single">
+          <div class="choice-card" data-group="mousse-trt" data-val="Grattage + traitement hydrofuge" onclick="selectChoice(this)"><div class="choice-label">Grattage + traitement hydrofuge</div></div>
+          <div class="choice-card" data-group="mousse-trt" data-val="Traitement chimique sans grattage" onclick="selectChoice(this)"><div class="choice-label">Traitement chimique sans grattage</div></div>
+          <div class="choice-card" data-group="mousse-trt" data-val="Nettoyage haute pression" onclick="selectChoice(this)"><div class="choice-label">Nettoyage haute pression</div></div>
+          <div class="choice-card" data-group="mousse-trt" data-val="Conseil / Je ne sais pas" onclick="selectChoice(this)"><div class="choice-label">Conseil / Je ne sais pas</div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Dernier entretien effectué <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="mousse-date" data-val="Moins de 5 ans" onclick="selectChoice(this)"><div class="choice-label">Moins de 5 ans</div></div>
+          <div class="choice-card" data-group="mousse-date" data-val="5 à 10 ans" onclick="selectChoice(this)"><div class="choice-label">5 à 10 ans</div></div>
+          <div class="choice-card" data-group="mousse-date" data-val="Plus de 10 ans" onclick="selectChoice(this)"><div class="choice-label">Plus de 10 ans</div></div>
+          <div class="choice-card" data-group="mousse-date" data-val="Jamais entretenu" onclick="selectChoice(this)"><div class="choice-label">Jamais entretenu</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === SUB : ZINGUERIE === -->
+    <div id="sub-zinguerie" style="display:none">
+      <div class="field">
+        <label>Élément(s) concerné(s) <span class="req">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="zing-elem" data-val="Gouttières" onclick="selectChoice(this)"><span class="choice-icon">🪣</span><div class="choice-label">Gouttières</div></div>
+          <div class="choice-card" data-group="zing-elem" data-val="Chéneaux" onclick="selectChoice(this)"><span class="choice-icon">🔩</span><div class="choice-label">Chéneaux</div></div>
+          <div class="choice-card" data-group="zing-elem" data-val="Façonnage zinc (noue, solin)" onclick="selectChoice(this)"><span class="choice-icon">⚙️</span><div class="choice-label">Façonnage zinc</div></div>
+          <div class="choice-card" data-group="zing-elem" data-val="Acrotères" onclick="selectChoice(this)"><span class="choice-icon">🏗️</span><div class="choice-label">Acrotères</div></div>
+          <div class="choice-card" data-group="zing-elem" data-val="Appuis de fenêtres" onclick="selectChoice(this)"><span class="choice-icon">🪟</span><div class="choice-label">Appuis de fenêtres</div></div>
+          <div class="choice-card" data-group="zing-elem" data-val="Je ne sais pas exactement" onclick="selectChoice(this)"><span class="choice-icon">❓</span><div class="choice-label">Je ne sais pas</div></div>
+        </div>
+        <div class="error-msg" id="err-zing-elem">Veuillez sélectionner l'élément concerné.</div>
+      </div>
+      <div class="field">
+        <label>Besoin <span class="req">*</span></label>
+        <div class="choice-grid single">
+          <div class="choice-card" data-group="zing-besoin" data-val="Remplacement (existant dégradé)" onclick="selectChoice(this)"><span class="choice-icon">🔄</span><div><div class="choice-label">Remplacement</div><div class="choice-sub">Élément existant dégradé ou cassé</div></div></div>
+          <div class="choice-card" data-group="zing-besoin" data-val="Création (nouvelle installation)" onclick="selectChoice(this)"><span class="choice-icon">🆕</span><div><div class="choice-label">Création</div><div class="choice-sub">Nouvelle installation, n'existe pas encore</div></div></div>
+          <div class="choice-card" data-group="zing-besoin" data-val="Réparation ponctuelle" onclick="selectChoice(this)"><span class="choice-icon">🔧</span><div><div class="choice-label">Réparation ponctuelle</div><div class="choice-sub">Fissure, joint, petit défaut</div></div></div>
+        </div>
+        <div class="error-msg" id="err-zing-besoin">Veuillez préciser votre besoin.</div>
+      </div>
+      <div class="field">
+        <label>Présence d'une fuite associée ? <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="zing-fuite" data-val="Oui, fuite associée" onclick="selectChoice(this)"><div class="choice-label">Oui</div></div>
+          <div class="choice-card" data-group="zing-fuite" data-val="Non, uniquement la zinguerie" onclick="selectChoice(this)"><div class="choice-label">Non</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === SUB : ISOLATION === -->
+    <div id="sub-isolation" style="display:none">
+      <div class="field">
+        <label>Type d'isolation souhaité <span class="req">*</span></label>
+        <div class="choice-grid single">
+          <div class="choice-card" data-group="iso-type" data-val="Isolation sous rampants (intérieure)" onclick="selectChoice(this)"><span class="choice-icon">🏠</span><div><div class="choice-label">Isolation sous rampants (intérieure)</div><div class="choice-sub">Combles aménagés, laine de verre ou rouleau</div></div></div>
+          <div class="choice-card" data-group="iso-type" data-val="Isolation extérieure par le toit (ITE)" onclick="selectChoice(this)"><span class="choice-icon">🏗️</span><div><div class="choice-label">Isolation extérieure (ITE)</div><div class="choice-sub">Sarking, panneaux rigides sous la couverture</div></div></div>
+          <div class="choice-card" data-group="iso-type" data-val="Je ne sais pas, besoin de conseil" onclick="selectChoice(this)"><span class="choice-icon">❓</span><div><div class="choice-label">Je ne sais pas — besoin de conseil</div></div></div>
+        </div>
+        <div class="error-msg" id="err-iso-type">Sélectionnez le type d'isolation.</div>
+      </div>
+      <div class="field">
+        <label>Objectif principal <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="iso-obj" data-val="Réduire les factures énergétiques" onclick="selectChoice(this)"><div class="choice-label">Réduire les factures</div></div>
+          <div class="choice-card" data-group="iso-obj" data-val="Confort thermique (chaud l'hiver)" onclick="selectChoice(this)"><div class="choice-label">Confort hivernal</div></div>
+          <div class="choice-card" data-group="iso-obj" data-val="Confort estival (frais l'été)" onclick="selectChoice(this)"><div class="choice-label">Confort estival</div></div>
+          <div class="choice-card" data-group="iso-obj" data-val="Isolation acoustique" onclick="selectChoice(this)"><div class="choice-label">Acoustique</div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Surface approximative à isoler <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="iso-surface" data-val="Moins de 30 m²" onclick="selectChoice(this)"><div class="choice-label">Moins de 30 m²</div></div>
+          <div class="choice-card" data-group="iso-surface" data-val="30 à 80 m²" onclick="selectChoice(this)"><div class="choice-label">30 à 80 m²</div></div>
+          <div class="choice-card" data-group="iso-surface" data-val="Plus de 80 m²" onclick="selectChoice(this)"><div class="choice-label">Plus de 80 m²</div></div>
+          <div class="choice-card" data-group="iso-surface" data-val="Je ne sais pas" onclick="selectChoice(this)"><div class="choice-label">Je ne sais pas</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === SUB : VELUX === -->
+    <div id="sub-velux" style="display:none">
+      <div class="field">
+        <label>Nature de votre demande Velux <span class="req">*</span></label>
+        <div class="choice-grid single">
+          <div class="choice-card" data-group="velux-type" data-val="Pose d'un nouveau Velux (création)" onclick="selectChoice(this)"><span class="choice-icon">✨</span><div><div class="choice-label">Création — nouveau Velux</div><div class="choice-sub">Ouverture à créer dans la toiture</div></div></div>
+          <div class="choice-card" data-group="velux-type" data-val="Remplacement d'un Velux existant" onclick="selectChoice(this)"><span class="choice-icon">🔄</span><div><div class="choice-label">Remplacement d'un Velux existant</div><div class="choice-sub">Velux vieillissant ou cassé à changer</div></div></div>
+          <div class="choice-card" data-group="velux-type" data-val="Fuite autour du Velux" onclick="selectChoice(this)"><span class="choice-icon">💧</span><div><div class="choice-label">Fuite autour du Velux</div><div class="choice-sub">Infiltration, joint défectueux, collet dégradé</div></div></div>
+          <div class="choice-card" data-group="velux-type" data-val="Volet / Accessoire solaire Velux" onclick="selectChoice(this)"><span class="choice-icon">☀️</span><div><div class="choice-label">Volet ou accessoire solaire Velux</div><div class="choice-sub">Volet occultant solaire, motorisation</div></div></div>
+        </div>
+        <div class="error-msg" id="err-velux-type">Veuillez préciser votre demande.</div>
+      </div>
+      <div class="field">
+        <label>Nombre de Velux concernés <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="velux-nb" data-val="1 Velux" onclick="selectChoice(this)"><div class="choice-label">1</div></div>
+          <div class="choice-card" data-group="velux-nb" data-val="2 à 3 Velux" onclick="selectChoice(this)"><div class="choice-label">2 à 3</div></div>
+          <div class="choice-card" data-group="velux-nb" data-val="4 Velux et plus" onclick="selectChoice(this)"><div class="choice-label">4 et plus</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === SUB : URGENCE === -->
+    <div id="sub-urgence" style="display:none">
+      <div class="field">
+        <label>Nature de l'urgence <span class="req">*</span></label>
+        <div class="choice-grid single">
+          <div class="choice-card" data-group="urgence-type" data-val="Tempête / Vent fort (dégâts immédiats)" onclick="selectChoice(this)"><span class="choice-icon">🌪️</span><div><div class="choice-label">Tempête / Vent fort</div><div class="choice-sub">Tuiles arrachées, structure exposée</div></div></div>
+          <div class="choice-card" data-group="urgence-type" data-val="Toiture ouverte — bâchage urgent" onclick="selectChoice(this)"><span class="choice-icon">🚨</span><div><div class="choice-label">Toiture ouverte — bâchage urgent</div><div class="choice-sub">Intervention immédiate nécessaire</div></div></div>
+          <div class="choice-card" data-group="urgence-type" data-val="Fuite importante avec dégâts intérieurs" onclick="selectChoice(this)"><span class="choice-icon">🌊</span><div><div class="choice-label">Fuite importante avec dégâts intérieurs</div><div class="choice-sub">Eau qui entre massivement</div></div></div>
+          <div class="choice-card" data-group="urgence-type" data-val="Chute d'élément (tuile, zinc, gouttière)" onclick="selectChoice(this)"><span class="choice-icon">⬇️</span><div><div class="choice-label">Chute d'élément</div><div class="choice-sub">Élément tombé ou sur le point de tomber</div></div></div>
+        </div>
+        <div class="error-msg" id="err-urgence-type">Précisez la nature de l'urgence.</div>
+      </div>
+      <div class="field">
+        <label>L'accès à la toiture est-il sécurisé ? <span class="req">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="urgence-acces" data-val="Oui, accès possible" onclick="selectChoice(this)"><div class="choice-label">✅ Oui, accessible</div></div>
+          <div class="choice-card" data-group="urgence-acces" data-val="Non, accès difficile" onclick="selectChoice(this)"><div class="choice-label">⚠️ Accès difficile</div></div>
+          <div class="choice-card" data-group="urgence-acces" data-val="Je ne sais pas" onclick="selectChoice(this)"><div class="choice-label">❓ Je ne sais pas</div></div>
+        </div>
+        <div class="error-msg" id="err-urgence-acces">Répondez à cette question.</div>
+      </div>
+    </div>
+
+    <!-- === SUB : DIAGNOSTIC === -->
+    <div id="sub-diagnostic" style="display:none">
+      <div class="field">
+        <label>Motif du diagnostic <span class="req">*</span></label>
+        <div class="choice-grid single">
+          <div class="choice-card" data-group="diag-motif" data-val="Inspection préventive (entretien courant)" onclick="selectChoice(this)"><span class="choice-icon">🔍</span><div><div class="choice-label">Inspection préventive</div><div class="choice-sub">Vérification régulière, pas de problème apparent</div></div></div>
+          <div class="choice-card" data-group="diag-motif" data-val="Avant achat immobilier" onclick="selectChoice(this)"><span class="choice-icon">🏠</span><div><div class="choice-label">Avant achat immobilier</div><div class="choice-sub">Due diligence avant acquisition</div></div></div>
+          <div class="choice-card" data-group="diag-motif" data-val="Avant projet de rénovation" onclick="selectChoice(this)"><span class="choice-icon">📋</span><div><div class="choice-label">Avant projet de rénovation</div><div class="choice-sub">Planifier des travaux à venir</div></div></div>
+          <div class="choice-card" data-group="diag-motif" data-val="Suite à un sinistre (assurance)" onclick="selectChoice(this)"><span class="choice-icon">📄</span><div><div class="choice-label">Suite à un sinistre (assurance)</div><div class="choice-sub">Rapport pour assureur</div></div></div>
+        </div>
+        <div class="error-msg" id="err-diag-motif">Précisez le motif.</div>
+      </div>
+      <div class="field">
+        <label>Avez-vous déjà un devis d'un autre artisan ? <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="diag-devis" data-val="Oui, je souhaite un second avis" onclick="selectChoice(this)"><div class="choice-label">Oui, second avis</div></div>
+          <div class="choice-card" data-group="diag-devis" data-val="Non, premier contact" onclick="selectChoice(this)"><div class="choice-label">Non, premier contact</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMMON QUESTIONS (always visible in step 3) -->
+    <div id="common-questions">
+      <div class="field">
+        <label>Type de bâtiment <span class="req">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="batiment" data-val="Maison individuelle" onclick="selectChoice(this)"><span class="choice-icon">🏡</span><div class="choice-label">Maison individuelle</div></div>
+          <div class="choice-card" data-group="batiment" data-val="Appartement / Copropriété" onclick="selectChoice(this)"><span class="choice-icon">🏢</span><div class="choice-label">Appartement / Copro</div></div>
+          <div class="choice-card" data-group="batiment" data-val="Immeuble haussmannien" onclick="selectChoice(this)"><span class="choice-icon">🏛️</span><div class="choice-label">Immeuble haussmannien</div></div>
+          <div class="choice-card" data-group="batiment" data-val="Local commercial" onclick="selectChoice(this)"><span class="choice-icon">🏪</span><div class="choice-label">Local commercial</div></div>
+          <div class="choice-card" data-group="batiment" data-val="Monument / Bâtiment classé" onclick="selectChoice(this)"><span class="choice-icon">🏰</span><div class="choice-label">Monument / Classé</div></div>
+          <div class="choice-card" data-group="batiment" data-val="Autre" onclick="selectChoice(this)"><span class="choice-icon">❓</span><div class="choice-label">Autre</div></div>
+        </div>
+        <div class="error-msg" id="err-batiment">Sélectionnez le type de bâtiment.</div>
+      </div>
+
+      <div class="field">
+        <label>Accessibilité de la toiture <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="accessibilite" data-val="Accessible facilement" onclick="selectChoice(this)"><div class="choice-label">Accessible</div></div>
+          <div class="choice-card" data-group="accessibilite" data-val="Accès difficile (hauteur, pente)" onclick="selectChoice(this)"><div class="choice-label">Accès difficile</div></div>
+          <div class="choice-card" data-group="accessibilite" data-val="Nacelle / échafaudage requis" onclick="selectChoice(this)"><div class="choice-label">Nacelle / échafaudage</div></div>
+          <div class="choice-card" data-group="accessibilite" data-val="Je ne sais pas" onclick="selectChoice(this)"><div class="choice-label">Je ne sais pas</div></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Budget estimé <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="budget" data-val="Moins de 500 €" onclick="selectChoice(this)"><div class="choice-label">Moins de 500 €</div></div>
+          <div class="choice-card" data-group="budget" data-val="500 € à 2 000 €" onclick="selectChoice(this)"><div class="choice-label">500 € à 2 000 €</div></div>
+          <div class="choice-card" data-group="budget" data-val="2 000 € à 10 000 €" onclick="selectChoice(this)"><div class="choice-label">2 000 € à 10 000 €</div></div>
+          <div class="choice-card" data-group="budget" data-val="Plus de 10 000 €" onclick="selectChoice(this)"><div class="choice-label">Plus de 10 000 €</div></div>
+          <div class="choice-card" data-group="budget" data-val="Je préfère ne pas préciser" onclick="selectChoice(this)"><div class="choice-label">Non précisé</div></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Délai souhaité pour l'intervention <span class="opt">(optionnel)</span></label>
+        <div class="choice-grid">
+          <div class="choice-card" data-group="delai" data-val="Urgent (dans les 48h)" onclick="selectChoice(this)"><div class="choice-label">🚨 Urgent (48h)</div></div>
+          <div class="choice-card" data-group="delai" data-val="Dans la semaine" onclick="selectChoice(this)"><div class="choice-label">Dans la semaine</div></div>
+          <div class="choice-card" data-group="delai" data-val="Dans le mois" onclick="selectChoice(this)"><div class="choice-label">Dans le mois</div></div>
+          <div class="choice-card" data-group="delai" data-val="Pas de contrainte" onclick="selectChoice(this)"><div class="choice-label">Sans contrainte</div></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Informations complémentaires <span class="opt">(optionnel)</span></label>
+        <textarea id="complement" placeholder="Décrivez tout détail utile : étage, particularités du toit, tentatives de réparation précédentes, photos disponibles…"></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(2)">← Retour</button>
+      <button class="btn btn-primary" onclick="goStep(4)">Voir mon résumé →</button>
+    </div>
+  </div>
+
+  <!-- ====================== STEP 4 : RESULT ====================== -->
+  <div class="section-card" id="step4">
+    <div class="section-tag">Étape 4 · Résultat</div>
+    <div class="section-title">Votre diagnostic est prêt</div>
+    <div class="section-desc">Envoyez ce résumé à notre équipe via le canal de votre choix.</div>
+    <div class="btn-row" style="margin-top:0;margin-bottom:0">
+      <button class="btn btn-primary" onclick="buildResult()">Générer mon résumé ✓</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(3)">← Retour</button>
+    </div>
+  </div>
+
+  <!-- ====================== RESULT ====================== -->
+  <div id="result">
+    <div class="result-header">
+      <div class="result-badge" id="res-badge">Résumé diagnostic</div>
+      <h2 id="res-title">Votre situation</h2>
+      <p id="res-sub">Résumé généré par Diagnostic-Toit · AD CHANTIERS</p>
+    </div>
+
+    <div class="summary-block">
+      <h3>📋 Vos coordonnées</h3>
+      <div id="res-contact"></div>
+    </div>
+
+    <div class="summary-block">
+      <h3>🏠 Votre situation</h3>
+      <div id="res-situation"></div>
+    </div>
+
+    <div class="reco-block">
+      <h3>⭐ Notre recommandation</h3>
+      <div id="res-urgency"></div>
+      <div id="res-reco"></div>
+    </div>
+
+    <div class="contact-block">
+      <h3>📲 Envoyer ce résumé à AD CHANTIERS</h3>
+      <p>Choisissez votre canal préféré — le résumé sera pré-rempli automatiquement.</p>
+      <div class="contact-btns">
+        <a id="btn-whatsapp" class="contact-btn btn-whatsapp" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+        <a id="btn-sms" class="contact-btn btn-sms" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+          SMS
+        </a>
+        <a id="btn-mail" class="contact-btn btn-mail" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          Email
+        </a>
+        <a id="btn-messenger" class="contact-btn btn-messenger" href="https://m.me/61559818739101" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111S18.627 0 12 0zm1.191 14.963L10.782 12.38l-4.836 2.583 5.314-5.642 2.438 2.587 4.808-2.587-5.315 5.642z"/></svg>
+          Messenger
+        </a>
+      </div>
+    </div>
+
+    <!-- BLOC COPIER-COLLER -->
+    <div class="copy-block">
+      <h3>📋 Copier mon résumé</h3>
+      <p>Vous préférez coller vous-même le texte dans un message, une note ou un email ? Copiez-le ici.</p>
+      <textarea id="copy-textarea" readonly></textarea>
+      <button class="copy-btn" id="copy-btn" onclick="copyResume()">📋 Copier le résumé</button>
+    </div>
+
+    <button class="restart-btn" onclick="restart()">↺ Recommencer un nouveau diagnostic</button>
+  </div>
+
+</div>
+
+<footer>
+  <strong style="color:var(--gold)">AD CHANTIERS</strong> · Couverture-Zinguerie Francilienne<br>
+  <a href="tel:0757632210">07 57 63 22 10</a> · <a href="mailto:services@adchantiers.fr">services@adchantiers.fr</a> · <a href="https://www.adchantiers.co" target="_blank">adchantiers.co</a><br>
+  <span style="margin-top:8px;display:inline-block">
+    <a href="#" onclick="openML(event)">Mentions légales</a> · 
+    <a href="#" onclick="openML(event)">Politique de confidentialité</a> · 
+    © <span id="year"></span> AD CHANTIERS SASU — Tous droits réservés
+  </span>
+</footer>
+
+<!-- MODALE MENTIONS LÉGALES -->
+<div class="modal-overlay" id="ml-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeML()">✕</button>
+    <h2>Mentions légales & Confidentialité</h2>
+
+    <h3>1. Éditeur du site</h3>
+    <p><strong>AD CHANTIERS SASU</strong><br>
+    Siège social : 122 rue Amelot, 75011 Paris<br>
+    Capital social : 500 €<br>
+    SIRET : 106 118 573 00018<br>
+    RCS Paris : 2026B29358<br>
+    Président : Makhili JABBIE<br>
+    Email : <a href="mailto:services@adchantiers.fr">services@adchantiers.fr</a><br>
+    Téléphone : <a href="tel:0757632210">07 57 63 22 10</a></p>
+
+    <div class="ml-divider"></div>
+
+    <h3>2. Hébergement</h3>
+    <p>Ce site est hébergé par <strong>GitHub Pages</strong> (GitHub, Inc. — 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA) et/ou <strong>WordPress.com</strong> (Automattic Inc. — 60 29th Street #343, San Francisco, CA 94110, USA).</p>
+
+    <div class="ml-divider"></div>
+
+    <h3>3. Objet de l'outil Diagnostic-Toit</h3>
+    <p>Diagnostic-Toit est un outil d'aide à la qualification de problèmes liés à la couverture et à la zinguerie. Il ne constitue pas un diagnostic technique certifié, ni un devis ou un contrat. Les recommandations générées sont indicatives et basées sur les informations déclarées par l'utilisateur. Seule une visite sur site par un professionnel qualifié permet d'établir un diagnostic définitif.</p>
+
+    <div class="ml-divider"></div>
+
+    <h3>4. Collecte et traitement des données personnelles</h3>
+    <p>Les données saisies (nom, prénom, ville, téléphone, email) sont collectées dans le seul but de permettre à AD CHANTIERS de vous recontacter suite à votre demande. Elles ne sont pas stockées automatiquement sur nos serveurs : elles transitent uniquement via le canal de communication que vous choisissez (WhatsApp, SMS, email ou Messenger).</p>
+    <ul>
+      <li>Responsable du traitement : AD CHANTIERS SASU</li>
+      <li>Finalité : prise de contact commerciale suite à une demande volontaire</li>
+      <li>Durée de conservation : données transmises directement à l'artisan, conservées le temps nécessaire au traitement de votre demande</li>
+      <li>Droits : accès, rectification, suppression — contacter <a href="mailto:services@adchantiers.fr">services@adchantiers.fr</a></li>
+    </ul>
+    <p>Conformément au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679) et à la loi Informatique et Libertés du 6 janvier 1978 modifiée.</p>
+
+    <div class="ml-divider"></div>
+
+    <h3>5. Cookies et traceurs</h3>
+    <p>Ce site n'utilise aucun cookie de traçage, de publicité ou d'analyse. Aucun outil de mesure d'audience tiers n'est intégré.</p>
+
+    <div class="ml-divider"></div>
+
+    <h3>6. Propriété intellectuelle</h3>
+    <p>L'ensemble des contenus de ce site (textes, visuels, logique de diagnostic, identité graphique) est la propriété exclusive d'AD CHANTIERS SASU. Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.</p>
+
+    <div class="ml-divider"></div>
+
+    <h3>7. Responsabilité</h3>
+    <p>AD CHANTIERS SASU s'efforce de maintenir les informations présentées à jour. Toutefois, la société ne saurait être tenue responsable des erreurs ou omissions, ni des dommages résultant de l'utilisation de cet outil à titre informatif.</p>
+
+    <div class="ml-divider"></div>
+
+    <h3>8. Droit applicable</h3>
+    <p>Le présent site est soumis au droit français. Tout litige relatif à son utilisation est de la compétence exclusive des tribunaux compétents du ressort de Paris.</p>
+
+    <div style="margin-top:20px;text-align:center">
+      <button class="copy-btn" onclick="closeML()" style="max-width:200px">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== STATE =====
+  const data = {};
+  let currentStep = 1;
+  const totalSteps = 4;
+
+  // ===== PROGRESS =====
+  function updateProgress(step) {
+    const pct = Math.round(((step - 1) / (totalSteps - 1)) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + ' %';
+    document.getElementById('progressText').textContent = 'Étape ' + step + ' sur ' + totalSteps;
+  }
+
+  // ===== CHOICE CARDS =====
+  function selectChoice(el) {
+    const group = el.dataset.group;
+    document.querySelectorAll('[data-group="' + group + '"]').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    data[group] = el.dataset.val;
+    const err = document.getElementById('err-' + group);
+    if (err) { err.classList.remove('show'); el.classList.remove('error'); }
+  }
+
+  // ===== SHOW SUB SECTION =====
+  function showSub(probleme) {
+    const subs = ['fuite','renovation','mousse','zinguerie','isolation','velux','urgence','diagnostic'];
+    subs.forEach(s => document.getElementById('sub-' + s).style.display = 'none');
+    const map = {
+      'Fuite / Infiltration d\'eau': 'fuite',
+      'Toiture vieillissante / à rénover': 'renovation',
+      'Mousse / Végétation / Entretien': 'mousse',
+      'Zinguerie (gouttières, chéneaux, zinc)': 'zinguerie',
+      'Isolation (thermique / acoustique)': 'isolation',
+      'Velux / Fenêtre de toit': 'velux',
+      'Urgence (tempête, bâchage)': 'urgence',
+      'Diagnostic / Devis sans problème précis': 'diagnostic'
+    };
+    if (map[probleme]) {
+      document.getElementById('sub-' + map[probleme]).style.display = 'block';
+      const titles = {
+        'fuite': ['Localiser la fuite', 'Précisez où et comment se manifeste le problème.'],
+        'renovation': ['État de votre toiture', 'Ces informations nous aideront à évaluer l\'ampleur des travaux.'],
+        'mousse': ['Entretien de toiture', 'Décrivez l\'état de votre couverture.'],
+        'zinguerie': ['Zinguerie concernée', 'Précisez l\'élément et la nature de votre besoin.'],
+        'isolation': ['Projet d\'isolation', 'Précisez vos besoins en isolation.'],
+        'velux': ['Votre Velux / fenêtre de toit', 'Précisez la nature de votre demande.'],
+        'urgence': ['Situation d\'urgence', 'Décrivez rapidement la situation.'],
+        'diagnostic': ['Votre demande de diagnostic', 'Précisez le contexte.']
+      };
+      const key = map[probleme];
+      document.getElementById('step3-title').textContent = titles[key][0];
+      document.getElementById('step3-desc').textContent = titles[key][1];
+    }
+  }
+
+  // ===== VALIDATION =====
+  function validateStep(step) {
+    let valid = true;
+
+    function checkText(id, errId) {
+      const el = document.getElementById(id);
+      const err = document.getElementById(errId);
+      if (!el.value.trim()) { el.classList.add('error'); err.classList.add('show'); valid = false; }
+      else { el.classList.remove('error'); err.classList.remove('show'); }
+    }
+    function checkGroup(group, errId) {
+      if (!data[group]) {
+        const err = document.getElementById(errId);
+        if (err) { err.classList.add('show'); valid = false; }
+      }
+    }
+
+    if (step === 1) {
+      checkText('prenom', 'err-prenom');
+      checkText('nom', 'err-nom');
+      checkText('ville', 'err-ville');
+      checkText('tel', 'err-tel');
+      checkGroup('profil', 'err-profil');
+    }
+
+    if (step === 2) {
+      checkGroup('probleme', 'err-probleme');
+    }
+
+    if (step === 3) {
+      const p = data['probleme'];
+      if (p === 'Fuite / Infiltration d\'eau') {
+        checkGroup('fuite-lieu', 'err-fuite-lieu');
+        checkGroup('fuite-active', 'err-fuite-active');
+      }
+      if (p === 'Toiture vieillissante / à rénover') {
+        checkGroup('reno-mat', 'err-reno-mat');
+        checkGroup('reno-etendue', 'err-reno-etendue');
+      }
+      if (p === 'Mousse / Végétation / Entretien') {
+        checkGroup('mousse-etat', 'err-mousse-etat');
+      }
+      if (p === 'Zinguerie (gouttières, chéneaux, zinc)') {
+        checkGroup('zing-elem', 'err-zing-elem');
+        checkGroup('zing-besoin', 'err-zing-besoin');
+      }
+      if (p === 'Isolation (thermique / acoustique)') {
+        checkGroup('iso-type', 'err-iso-type');
+      }
+      if (p === 'Velux / Fenêtre de toit') {
+        checkGroup('velux-type', 'err-velux-type');
+      }
+      if (p === 'Urgence (tempête, bâchage)') {
+        checkGroup('urgence-type', 'err-urgence-type');
+        checkGroup('urgence-acces', 'err-urgence-acces');
+      }
+      if (p === 'Diagnostic / Devis sans problème précis') {
+        checkGroup('diag-motif', 'err-diag-motif');
+      }
+      checkGroup('batiment', 'err-batiment');
+    }
+
+    return valid;
+  }
+
+  // ===== NAVIGATION =====
+  function goStep(n) {
+    if (n > currentStep && !validateStep(currentStep)) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (n === 3 && data['probleme']) showSub(data['probleme']);
+
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep = n;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateProgress(currentStep);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (n === 4) {
+      // collect text fields
+      data['prenom'] = document.getElementById('prenom').value.trim();
+      data['nom'] = document.getElementById('nom').value.trim();
+      data['ville'] = document.getElementById('ville').value.trim();
+      data['tel'] = document.getElementById('tel').value.trim();
+      data['email'] = document.getElementById('email').value.trim();
+      data['complement'] = document.getElementById('complement').value.trim();
+    }
+  }
+
+  // ===== RECOMMENDATION ENGINE =====
+  function getRecommendation() {
+    const p = data['probleme'];
+    let urgency = 'normal';
+    let recos = [];
+    let visite = false;
+    let badge = 'Résumé Diagnostic';
+
+    if (p === 'Fuite / Infiltration d\'eau') {
+      if (data['fuite-active'] === 'Oui, fuite active') urgency = 'urgent';
+      if (data['fuite-hist'] === 'Oui, sans résultat' || data['fuite-lieu'] === 'Pas certain, partout') {
+        visite = true;
+        recos.push('Diagnostic complet sur site pour localiser précisément l\'origine de la fuite');
+        recos.push('Inspection de l\'étanchéité générale de la couverture');
+      } else {
+        recos.push('Recherche de fuite ciblée sur la zone concernée (' + (data['fuite-lieu'] || 'zone à définir') + ')');
+        recos.push('Réparation ponctuelle ou remplacement des éléments défectueux');
+      }
+      if (data['fuite-active'] === 'Oui, fuite active') recos.unshift('🚨 Intervention urgente recommandée — Bâchage provisoire si nécessaire');
+    }
+
+    else if (p === 'Toiture vieillissante / à rénover') {
+      const etendue = data['reno-etendue'] || '';
+      if (etendue.includes('complète')) {
+        visite = true;
+        recos.push('Réfection complète de la couverture en ' + (data['reno-mat'] || 'matériau à définir'));
+        recos.push('Inspection préalable de la charpente obligatoire avant tout chantier');
+        recos.push('Visite sur site pour établir un devis précis et évaluer l\'état de la charpente');
+      } else if (etendue.includes('partielle')) {
+        visite = true;
+        recos.push('Réfection partielle de la couverture');
+        recos.push('Inspection de l\'ensemble pour prévenir une extension des dégradations');
+      } else if (etendue.includes('isolés')) {
+        recos.push('Remplacement des éléments isolés défectueux (' + (data['reno-mat'] || '') + ')');
+        recos.push('Contrôle de la zone environnante pour détecter d\'autres fragilités');
+      } else {
+        visite = true;
+        recos.push('Diagnostic complet pour évaluer l\'étendue réelle des travaux');
+      }
+      if (data['reno-charp'] === 'Oui, problème détecté') {
+        recos.push('⚠️ Intervention d\'un charpentier recommandée en priorité — la couverture ne doit pas être refaite sur une charpente défaillante');
+      }
+    }
+
+    else if (p === 'Mousse / Végétation / Entretien') {
+      const etat = data['mousse-etat'] || '';
+      if (etat.includes('épaisse') || etat.includes('Lichens')) {
+        visite = true;
+        recos.push('Démoussage professionnel avec grattage mécanique');
+        recos.push('Application d\'un traitement hydrofuge longue durée après nettoyage');
+        recos.push('Inspection complète lors du passage pour détecter d\'éventuels dégâts sous la végétation');
+      } else {
+        recos.push('Démoussage préventif (' + (data['mousse-trt'] || 'traitement à définir') + ')');
+        recos.push('Application d\'un hydrofuge pour retarder le retour de la mousse');
+      }
+    }
+
+    else if (p === 'Zinguerie (gouttières, chéneaux, zinc)') {
+      const besoin = data['zing-besoin'] || '';
+      recos.push(besoin + ' de ' + (data['zing-elem'] || 'l\'élément concerné'));
+      if (data['zing-fuite'] === 'Oui, fuite associée') {
+        visite = true;
+        recos.push('Recherche et traitement de la fuite associée');
+      }
+      if (besoin === 'Création (nouvelle installation)') {
+        visite = true;
+        recos.push('Visite sur site pour prise de mesures et devis de création');
+      }
+    }
+
+    else if (p === 'Isolation (thermique / acoustique)') {
+      const type = data['iso-type'] || '';
+      if (type.includes('extérieure')) {
+        visite = true;
+        recos.push('Isolation thermique par l\'extérieur (ITE / Sarking)');
+        recos.push('Visite sur site indispensable — à réaliser en même temps qu\'une réfection de couverture');
+      } else if (type.includes('rampants')) {
+        recos.push('Isolation des combles sous rampants');
+        recos.push('Pose de laine minérale ou de matériau biosourcé selon les contraintes');
+      } else {
+        visite = true;
+        recos.push('Diagnostic thermique sur site pour définir la solution d\'isolation adaptée');
+      }
+    }
+
+    else if (p === 'Velux / Fenêtre de toit') {
+      const type = data['velux-type'] || '';
+      if (type.includes('Fuite')) {
+        urgency = 'normal';
+        recos.push('Reprise de l\'étanchéité autour du Velux (joint, collet, contre-solin)');
+        recos.push('Vérification du cadre et de la menuiserie');
+      } else if (type.includes('Création')) {
+        visite = true;
+        recos.push('Création d\'une ouverture et pose de fenêtre de toit');
+        recos.push('Visite sur site obligatoire pour vérifier la charpente et l\'orientation');
+      } else if (type.includes('Remplacement')) {
+        recos.push('Dépose et remplacement du Velux existant');
+        recos.push('Reprise de l\'étanchéité périphérique à la pose');
+      } else if (type.includes('solaire')) {
+        recos.push('Pose ou remplacement d\'un volet occultant solaire Velux');
+      }
+    }
+
+    else if (p === 'Urgence (tempête, bâchage)') {
+      urgency = 'urgent';
+      recos.push('🚨 Intervention d\'urgence — Contacter AD CHANTIERS immédiatement au 07 57 63 22 10');
+      recos.push('Bâchage provisoire pour sécuriser la toiture dans l\'attente de la réparation');
+      recos.push('Bilan des dégâts et devis de réparation pérenne après sécurisation');
+      if (data['urgence-acces'] !== 'Oui, accès possible') {
+        recos.push('⚠️ Accès difficile signalé — prévoir équipement spécifique pour l\'intervention');
+      }
+    }
+
+    else if (p === 'Diagnostic / Devis sans problème précis') {
+      visite = true;
+      const motif = data['diag-motif'] || '';
+      if (motif.includes('achat')) {
+        badge = 'Diagnostic Pré-achat';
+        recos.push('Inspection complète de la toiture avant acquisition — rapport écrit disponible');
+        recos.push('Évaluation de l\'état général, des risques et du coût des travaux à prévoir');
+      } else if (motif.includes('sinistre')) {
+        badge = 'Diagnostic Sinistre';
+        recos.push('Diagnostic précis pour établir un rapport destiné à l\'assureur');
+        recos.push('Documentation photographique et estimation chiffrée des dégâts');
+      } else {
+        recos.push('Diagnostic complet de la couverture (inspection visuelle + points critiques)');
+        recos.push('Compte-rendu avec recommandations de travaux et ordre de priorité');
+      }
+    }
+
+    if (visite && urgency !== 'urgent') {
+      recos.push('📍 Situation complexe — une visite sur site par notre artisan est recommandée pour établir un diagnostic précis');
+    }
+
+    return { urgency, recos, badge };
+  }
+
+  // ===== BUILD TEXT SUMMARY =====
+  function buildSummary() {
+    const r = getRecommendation();
+    let lines = [];
+    lines.push('📋 DIAGNOSTIC-TOIT — AD CHANTIERS');
+    lines.push('══════════════════════════════');
+    lines.push('👤 Contact : ' + data['prenom'] + ' ' + data['nom']);
+    lines.push('📍 Ville : ' + data['ville']);
+    lines.push('📞 Tél : ' + data['tel']);
+    if (data['email']) lines.push('✉️ Email : ' + data['email']);
+    lines.push('👔 Profil : ' + (data['profil'] || '-'));
+    lines.push('');
+    lines.push('🔍 Problème principal : ' + (data['probleme'] || '-'));
+    lines.push('🏠 Type de bâtiment : ' + (data['batiment'] || '-'));
+
+    const p = data['probleme'];
+    if (p === 'Fuite / Infiltration d\'eau') {
+      if (data['fuite-lieu']) lines.push('💧 Lieu de la fuite : ' + data['fuite-lieu']);
+      if (data['fuite-active']) lines.push('⏱️ Fuite active : ' + data['fuite-active']);
+      if (data['fuite-duree']) lines.push('📅 Depuis : ' + data['fuite-duree']);
+      if (data['fuite-hist']) lines.push('🔧 Historique : ' + data['fuite-hist']);
+    }
+    if (p === 'Toiture vieillissante / à rénover') {
+      if (data['reno-mat']) lines.push('🧱 Matériau : ' + data['reno-mat']);
+      if (data['reno-age']) lines.push('📅 Âge toiture : ' + data['reno-age']);
+      if (data['reno-etendue']) lines.push('📐 Étendue : ' + data['reno-etendue']);
+      if (data['reno-charp']) lines.push('🪵 Charpente : ' + data['reno-charp']);
+    }
+    if (p === 'Mousse / Végétation / Entretien') {
+      if (data['mousse-etat']) lines.push('🌿 État : ' + data['mousse-etat']);
+      if (data['mousse-trt']) lines.push('🧪 Traitement souhaité : ' + data['mousse-trt']);
+      if (data['mousse-date']) lines.push('📅 Dernier entretien : ' + data['mousse-date']);
+    }
+    if (p === 'Zinguerie (gouttières, chéneaux, zinc)') {
+      if (data['zing-elem']) lines.push('⚙️ Élément : ' + data['zing-elem']);
+      if (data['zing-besoin']) lines.push('🔧 Besoin : ' + data['zing-besoin']);
+      if (data['zing-fuite']) lines.push('💧 Fuite associée : ' + data['zing-fuite']);
+    }
+    if (p === 'Isolation (thermique / acoustique)') {
+      if (data['iso-type']) lines.push('🌡️ Type isolation : ' + data['iso-type']);
+      if (data['iso-obj']) lines.push('🎯 Objectif : ' + data['iso-obj']);
+      if (data['iso-surface']) lines.push('📐 Surface : ' + data['iso-surface']);
+    }
+    if (p === 'Velux / Fenêtre de toit') {
+      if (data['velux-type']) lines.push('🪟 Demande : ' + data['velux-type']);
+      if (data['velux-nb']) lines.push('🔢 Nombre : ' + data['velux-nb']);
+    }
+    if (p === 'Urgence (tempête, bâchage)') {
+      if (data['urgence-type']) lines.push('⚠️ Nature urgence : ' + data['urgence-type']);
+      if (data['urgence-acces']) lines.push('🚪 Accès : ' + data['urgence-acces']);
+    }
+    if (p === 'Diagnostic / Devis sans problème précis') {
+      if (data['diag-motif']) lines.push('🔍 Motif : ' + data['diag-motif']);
+      if (data['diag-devis']) lines.push('📄 Devis existant : ' + data['diag-devis']);
+    }
+
+    if (data['accessibilite']) lines.push('🔑 Accessibilité : ' + data['accessibilite']);
+    if (data['budget']) lines.push('💶 Budget estimé : ' + data['budget']);
+    if (data['delai']) lines.push('⏰ Délai : ' + data['delai']);
+    if (data['complement']) lines.push('💬 Infos complémentaires : ' + data['complement']);
+    lines.push('');
+    lines.push('⭐ RECOMMANDATION AD CHANTIERS :');
+    r.recos.forEach((rec, i) => lines.push((i+1) + '. ' + rec));
+    lines.push('');
+    lines.push('Généré via Diagnostic-Toit · adchantiers.co');
+    return lines.join('\n');
+  }
+
+  // ===== BUILD RESULT UI =====
+  function buildResult() {
+    const r = getRecommendation();
+    data['prenom'] = document.getElementById('prenom').value.trim();
+    data['nom'] = document.getElementById('nom').value.trim();
+    data['ville'] = document.getElementById('ville').value.trim();
+    data['tel'] = document.getElementById('tel').value.trim();
+    data['email'] = document.getElementById('email').value.trim();
+    data['complement'] = document.getElementById('complement').value.trim();
+
+    document.getElementById('res-badge').textContent = r.badge;
+    document.getElementById('res-title').textContent = data['prenom'] + ' ' + data['nom'] + ' — ' + data['ville'];
+    document.getElementById('res-sub').textContent = 'Diagnostic généré le ' + new Date().toLocaleDateString('fr-FR') + ' · AD CHANTIERS';
+
+    // Contact block
+    let cHtml = '';
+    const cRows = [
+      ['Nom', data['prenom'] + ' ' + data['nom']],
+      ['Téléphone', data['tel']],
+      ['Email', data['email'] || '—'],
+      ['Ville', data['ville']],
+      ['Profil', data['profil'] || '—']
+    ];
+    cRows.forEach(row => {
+      cHtml += '<div class="summary-row"><div class="summary-key">' + row[0] + '</div><div class="summary-val">' + row[1] + '</div></div>';
+    });
+    document.getElementById('res-contact').innerHTML = cHtml;
+
+    // Situation block
+    let sHtml = '';
+    const sRows = [
+      ['Problème principal', data['probleme']],
+      ['Type de bâtiment', data['batiment'] || '—'],
+    ];
+    const p = data['probleme'];
+    if (p === 'Fuite / Infiltration d\'eau') {
+      if (data['fuite-lieu']) sRows.push(['Lieu de la fuite', data['fuite-lieu']]);
+      if (data['fuite-active']) sRows.push(['Fuite active', data['fuite-active']]);
+      if (data['fuite-duree']) sRows.push(['Depuis', data['fuite-duree']]);
+    }
+    if (p === 'Toiture vieillissante / à rénover') {
+      if (data['reno-mat']) sRows.push(['Matériau', data['reno-mat']]);
+      if (data['reno-etendue']) sRows.push(['Étendue', data['reno-etendue']]);
+      if (data['reno-charp']) sRows.push(['Charpente', data['reno-charp']]);
+    }
+    if (p === 'Mousse / Végétation / Entretien') {
+      if (data['mousse-etat']) sRows.push(['État', data['mousse-etat']]);
+      if (data['mousse-trt']) sRows.push(['Traitement', data['mousse-trt']]);
+    }
+    if (p === 'Zinguerie (gouttières, chéneaux, zinc)') {
+      if (data['zing-elem']) sRows.push(['Élément', data['zing-elem']]);
+      if (data['zing-besoin']) sRows.push(['Besoin', data['zing-besoin']]);
+    }
+    if (p === 'Isolation (thermique / acoustique)') {
+      if (data['iso-type']) sRows.push(['Type isolation', data['iso-type']]);
+    }
+    if (p === 'Velux / Fenêtre de toit') {
+      if (data['velux-type']) sRows.push(['Demande Velux', data['velux-type']]);
+    }
+    if (p === 'Urgence (tempête, bâchage)') {
+      if (data['urgence-type']) sRows.push(['Urgence', data['urgence-type']]);
+    }
+    if (p === 'Diagnostic / Devis sans problème précis') {
+      if (data['diag-motif']) sRows.push(['Motif', data['diag-motif']]);
+    }
+    if (data['accessibilite']) sRows.push(['Accessibilité', data['accessibilite']]);
+    if (data['budget']) sRows.push(['Budget estimé', data['budget']]);
+    if (data['delai']) sRows.push(['Délai souhaité', data['delai']]);
+    if (data['complement']) sRows.push(['Infos complémentaires', data['complement']]);
+
+    sRows.forEach(row => {
+      sHtml += '<div class="summary-row"><div class="summary-key">' + row[0] + '</div><div class="summary-val">' + row[1] + '</div></div>';
+    });
+    document.getElementById('res-situation').innerHTML = sHtml;
+
+    // Urgency tag
+    const urgencyMap = {
+      urgent: ['urgency-urgent', '🚨 Intervention urgente'],
+      normal: ['urgency-normal', '📋 Intervention planifiée'],
+      low: ['urgency-low', '✅ Entretien préventif']
+    };
+    const [cls, label] = urgencyMap[r.urgency];
+    document.getElementById('res-urgency').innerHTML = '<span class="urgency-tag ' + cls + '">' + label + '</span>';
+
+    // Reco items
+    let rHtml = '';
+    r.recos.forEach((rec, i) => {
+      rHtml += '<div class="reco-item"><div class="reco-bullet">' + (i+1) + '</div><div>' + rec + '</div></div>';
+    });
+    document.getElementById('res-reco').innerHTML = rHtml;
+
+    // Build message
+    const plainText = buildSummary();
+    const tel = '33757632210';
+    const telFr = '+33757632210';
+
+    // WhatsApp — fonctionne toujours avec wa.me
+    document.getElementById('btn-whatsapp').href = 'https://wa.me/' + tel + '?text=' + encodeURIComponent(plainText);
+
+    // SMS — on détecte iOS vs Android pour le bon séparateur
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const smsSep = isIOS ? '&' : '?';
+    document.getElementById('btn-sms').onclick = function(e) {
+      e.preventDefault();
+      // Copie d'abord le texte dans le presse-papier
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(plainText).catch(() => {});
+      }
+      // Ouvre l'app SMS avec le numéro pré-rempli (body court si trop long)
+      const shortBody = '📋 Diagnostic-Toit ADCH — ' + data['prenom'] + ' ' + data['nom'] + ' — ' + data['ville'] + ' — ' + data['probleme'] + '. Résumé complet copié dans votre presse-papier, collez-le dans ce message.';
+      window.location.href = 'sms:' + telFr + smsSep + 'body=' + encodeURIComponent(shortBody);
+    };
+    document.getElementById('btn-sms').href = '#';
+
+    // Email — body complet via mailto, subject court
+    const subject = encodeURIComponent('Diagnostic-Toit — ' + data['prenom'] + ' ' + data['nom'] + ' — ' + data['ville']);
+    const mailBody = encodeURIComponent(plainText);
+    document.getElementById('btn-mail').onclick = function(e) {
+      e.preventDefault();
+      const mailLink = 'mailto:services@adchantiers.fr?subject=' + subject + '&body=' + mailBody;
+      // Certains navigateurs bloquent mailto avec body trop long — on essaie d'abord
+      const a = document.createElement('a');
+      a.href = mailLink;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // Fallback : si rien ne s'ouvre après 600ms, on copie et affiche un message
+      setTimeout(() => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(plainText).then(() => {
+            showMailFallback();
+          }).catch(() => {});
+        }
+      }, 600);
+    };
+    document.getElementById('btn-mail').href = '#';
+
+    // Peupler textarea copier-coller
+    document.getElementById('copy-textarea').value = plainText;
+    // Tap sur le textarea = sélection automatique complète
+    document.getElementById('copy-textarea').ontouchstart = function() { this.select(); };
+    document.getElementById('copy-textarea').onclick = function() { this.select(); };
+
+    // Show result
+    document.getElementById('step4').classList.remove('active');
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('progressWrap').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===== RESTART =====
+  function restart() {
+    // Reset data
+    Object.keys(data).forEach(k => delete data[k]);
+    // Reset inputs
+    document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+    document.querySelectorAll('.choice-card').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+    document.querySelectorAll('input, select, textarea').forEach(el => el.classList.remove('error'));
+    // Reset subs
+    ['fuite','renovation','mousse','zinguerie','isolation','velux','urgence','diagnostic'].forEach(s => {
+      document.getElementById('sub-' + s).style.display = 'none';
+    });
+    // Reset copy block
+    document.getElementById('copy-textarea').value = '';
+    const cb = document.getElementById('copy-btn');
+    cb.textContent = '📋 Copier le résumé';
+    cb.classList.remove('copied');
+
+    // Show step 1
+    document.getElementById('result').style.display = 'none';
+    document.getElementById('progressWrap').style.display = 'block';
+    document.getElementById('step4').classList.remove('active');
+    currentStep = 1;
+    document.getElementById('step1').classList.add('active');
+    updateProgress(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Init
+  updateProgress(1);
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ===== MAIL FALLBACK TOAST =====
+  function showMailFallback() {
+    let toast = document.getElementById('mail-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'mail-toast';
+      toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1A2F45;border:1.5px solid #D4A017;color:#F0EDE8;padding:12px 20px;border-radius:10px;font-size:13px;z-index:9999;max-width:340px;text-align:center;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.5)';
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML = '📋 Résumé copié dans votre presse-papier.<br>Ouvrez votre messagerie et collez-le <strong>(Ctrl+V ou appui long)</strong>.';
+    toast.style.display = 'block';
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => { toast.style.display = 'none'; }, 400); }, 5000);
+  }
+
+  // ===== COPY RESUME =====
+  function copyResume() {
+    const plainText = buildSummary();
+    const ta = document.getElementById('copy-textarea');
+    ta.value = plainText;
+    const btn = document.getElementById('copy-btn');
+
+    // Méthode moderne (desktop + Android Chrome récent)
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(plainText).then(() => {
+        btn.textContent = '✅ Résumé copié !';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '📋 Copier le résumé'; btn.classList.remove('copied'); }, 2500);
+      }).catch(() => fallbackCopy(ta, btn));
+    } else {
+      fallbackCopy(ta, btn);
+    }
+  }
+
+  function fallbackCopy(ta, btn) {
+    ta.removeAttribute('readonly');
+    ta.select();
+    ta.setSelectionRange(0, 99999); // mobile
+    try {
+      document.execCommand('copy');
+      btn.textContent = '✅ Résumé copié !';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 Copier le résumé'; btn.classList.remove('copied'); }, 2500);
+    } catch(e) {
+      btn.textContent = '⚠️ Sélectionnez et copiez manuellement';
+    }
+    ta.setAttribute('readonly', true);
+  }
+
+  // ===== MENTIONS LÉGALES =====
+  function openML(e) {
+    e.preventDefault();
+    document.getElementById('ml-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeML() {
+    document.getElementById('ml-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('ml-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeML();
+  });
+</script>
+</body>
+</html>
